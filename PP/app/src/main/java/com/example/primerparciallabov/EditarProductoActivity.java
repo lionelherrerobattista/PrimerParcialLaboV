@@ -1,11 +1,14 @@
 package com.example.primerparciallabov;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
 
@@ -25,6 +28,9 @@ public class EditarProductoActivity extends AppCompatActivity {
         EditText edNombre = findViewById(R.id.edNombre);
         EditText edCantidad = findViewById(R.id.edCantidadProd);
         EditText edPrecio = findViewById(R.id.edPrecioProd);
+        Button btnEditar = findViewById(R.id.btnEditar);
+        EditarClick editarClick = new EditarClick(this);
+        btnEditar.setOnClickListener(editarClick);
 
         //Cargar datos
         Bundle bundle = super.getIntent().getExtras();
@@ -40,4 +46,21 @@ public class EditarProductoActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void enviarDatos() {
+
+        //Recuperar elementos
+        EditText edNombre = findViewById(R.id.edNombre);
+        EditText edCantidad = findViewById(R.id.edCantidadProd);
+        EditText edPrecio = findViewById(R.id.edPrecioProd);
+
+
+        Intent intent = new Intent();
+        intent.putExtra("nombre", edNombre.getText().toString());
+        intent.putExtra("cantidad", Integer.parseInt(edCantidad.getText().toString()));
+        intent.putExtra("precio", Double.parseDouble(edPrecio.getText().toString()));
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
 }

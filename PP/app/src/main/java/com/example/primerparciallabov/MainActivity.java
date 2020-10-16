@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Producto> listaProductos;
     private ProductoAdapter productoAdapter;
+    private Producto producto;
+    private int posicion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +60,34 @@ public class MainActivity extends AppCompatActivity {
 
         //intención de abrir una segunda activity:
         Intent i = new Intent(this, EditarProductoActivity.class);
-        Producto producto = this.listaProductos.get(posicion);
+        //Guardar producto y posicion
+        this.producto = this.listaProductos.get(posicion);
+        this.posicion = posicion;
+
 
         //Pasar datos:
-        i.putExtra("nombre", producto.getNombre());
-        i.putExtra("precio", producto.getPrecio().doubleValue());
-        i.putExtra("cantidad", producto.getCantidad().intValue());
-        startActivity(i);
+        i.putExtra("nombre", this.producto.getNombre());
+        i.putExtra("precio", this.producto.getPrecio().doubleValue());
+        i.putExtra("cantidad", this.producto.getCantidad().intValue());
+        startActivityForResult(i, 1);
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+
+                String nombre = data.getStringExtra("nombre");
+                Integer cantidad = data.getIntExtra("cantidad", 0);
+                Double precio = data.getDoubleExtra("precio", 0);
+
+                this.producto.setNombre(nombre);
+                this.producto.setCantidad(cantidad);
+                this.producto.setPrecio(precio);
+
+                this.productoAdapter.notifyItemChanged(this.posicion);
+            }
+        }
     }
 }
