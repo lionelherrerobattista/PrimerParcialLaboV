@@ -24,19 +24,15 @@ public class EditarProductoActivity extends AppCompatActivity {
         actionBar.setTitle("Editar Producto");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        //Recuperar elementos
-        EditText edNombre = findViewById(R.id.edNombre);
-        EditText edCantidad = findViewById(R.id.edCantidadProd);
-        EditText edPrecio = findViewById(R.id.edPrecioProd);
-        Button btnEditar = findViewById(R.id.btnEditar);
-        EditarClick editarClick = new EditarClick(this);
-        btnEditar.setOnClickListener(editarClick);
-
-        //Cargar datos
+        //Cargar datos y Vista
         Bundle bundle = super.getIntent().getExtras();
-        edNombre.setText(bundle.getString("nombre"));
-        edCantidad.setText(String.valueOf(bundle.getInt("cantidad")));
-        edPrecio.setText(String.valueOf(bundle.getDouble("precio")));
+        Producto producto = new Producto(bundle.getString("nombre"),
+                bundle.getInt("cantidad"),
+                bundle.getDouble("precio"));
+
+        ProductoView productoView = new ProductoView(this, producto);
+        productoView.cargarPantalla();
+
     }
 
     @Override
